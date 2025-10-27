@@ -338,7 +338,7 @@ pip install -r requirements.txt
 
 ## 👨‍💻 Author
 
-**Manus AI**
+**Sumetee Jirapattarasakul**
 
 Date: October 27, 2025
 
