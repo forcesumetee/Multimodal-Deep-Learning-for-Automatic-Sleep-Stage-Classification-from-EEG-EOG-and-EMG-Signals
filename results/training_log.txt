@@ -1,0 +1,213 @@
+2025-10-27 10:40:57.063444: I external/local_xla/xla/tsl/cuda/cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+2025-10-27 10:40:57.063886: I tensorflow/core/util/port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+2025-10-27 10:40:57.134224: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 AVX512F AVX512_VNNI FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2025-10-27 10:40:58.631311: I tensorflow/core/util/port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+2025-10-27 10:40:58.632403: I external/local_xla/xla/tsl/cuda/cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+/home/ubuntu/sleep_classification/train.py:54: RuntimeWarning: Channels contain different highpass filters. Highest filter setting will be stored.
+  raw = mne.io.read_raw_edf(psg_file, preload=True, verbose=False)
+/home/ubuntu/sleep_classification/train.py:54: RuntimeWarning: Channels contain different lowpass filters. Lowest filter setting will be stored.
+  raw = mne.io.read_raw_edf(psg_file, preload=True, verbose=False)
+/home/ubuntu/sleep_classification/train.py:54: RuntimeWarning: Highpass cutoff frequency 16.0 is greater than lowpass cutoff frequency 0.7, setting values to 0 and Nyquist.
+  raw = mne.io.read_raw_edf(psg_file, preload=True, verbose=False)
+2025-10-27 10:41:02.519215: E external/local_xla/xla/stream_executor/cuda/cuda_platform.cc:51] failed call to cuInit: INTERNAL: CUDA error: Failed call to cuInit: UNKNOWN ERROR (303)
+================================================================================
+Multimodal Sleep Stage Classification - Training
+================================================================================
+
+1. Loading and preprocessing data...
+   Total recording duration: 22.08 hours
+
+2. Creating epochs from annotations...
+   Total epochs created: 153
+   EEG shape: (153, 3000, 2)
+   EOG shape: (153, 3000, 1)
+   EMG shape: (153, 3000, 1)
+
+3. Class distribution:
+   Wake    :   12 epochs (  7.8%)
+   N1      :   24 epochs ( 15.7%)
+   N2      :   40 epochs ( 26.1%)
+   N3      :   71 epochs ( 46.4%)
+   REM     :    6 epochs (  3.9%)
+
+4. Normalizing data...
+   Scalers saved.
+
+5. Splitting data into train/validation/test sets...
+   Training set: 91 epochs
+   Validation set: 31 epochs
+   Test set: 31 epochs
+
+6. Class weights for imbalanced data:
+   Wake    : 2.550
+   N1      : 1.275
+   N2      : 0.765
+   N3      : 0.431
+   REM     : 5.100
+
+7. Building model...
+
+Model Summary:
+Model: "MultimodalSleepNet"
+┏━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┓
+┃ Layer (type)        ┃ Output Shape      ┃    Param # ┃ Connected to      ┃
+┡━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━┩
+│ eeg (InputLayer)    │ (None, 3000, 2)   │          0 │ -                 │
+├─────────────────────┼───────────────────┼────────────┼───────────────────┤
+│ emg (InputLayer)    │ (None, 3000, 1)   │          0 │ -                 │
+├─────────────────────┼───────────────────┼────────────┼───────────────────┤
+│ eog (InputLayer)    │ (None, 3000, 1)   │          0 │ -                 │
+├─────────────────────┼───────────────────┼────────────┼───────────────────┤
+│ multimodal_sleep_n… │ (None, 5)         │    476,422 │ eeg[0][0],        │
+│ (MultimodalSleepNe… │                   │            │ emg[0][0],        │
+│                     │                   │            │ eog[0][0]         │
+└─────────────────────┴───────────────────┴────────────┴───────────────────┘
+ Total params: 476,422 (1.82 MB)
+ Trainable params: 473,606 (1.81 MB)
+ Non-trainable params: 2,816 (11.00 KB)
+
+8. Training model...
+   This may take a while...
+
+Epoch 1/100
+[1m1/3[0m [32m━━━━━━[0m[37m━━━━━━━━━━━━━━[0m [1m14s[0m 7s/step - accuracy: 0.2812 - loss: 3.1914 - precision: 0.2857 - recall: 0.1875[1m3/3[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 29ms/step - accuracy: 0.2879 - loss: 2.4910 - precision: 0.3070 - recall: 0.1836
+Epoch 1: val_accuracy improved from None to 0.32258, saving model to /home/ubuntu/sleep_classification/models/best_model.keras
+[1m3/3[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m8s[0m 523ms/step - accuracy: 0.2857 - loss: 1.9420 - precision: 0.3019 - recall: 0.1758 - val_accuracy: 0.3226 - val_loss: 1.5685 - val_precision: 0.0000e+00 - val_recall: 0.0000e+00 - learning_rate: 0.0010
+Epoch 2/100
+[1m1/3[0m [32m━━━━━━[0m[37m━━━━━━━━━━━━━━[0m [1m0s[0m 46ms/step - accuracy: 0.6875 - loss: 0.7081 - precision: 0.6957 - recall: 0.5000[1m3/3[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 26ms/step - accuracy: 0.6332 - loss: 0.8179 - precision: 0.6776 - recall: 0.4851
+Epoch 2: val_accuracy improved from 0.32258 to 0.48387, saving model to /home/ubuntu/sleep_classification/models/best_model.keras
+[1m3/3[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 153ms/step - accuracy: 0.5714 - loss: 0.8601 - precision: 0.6349 - recall: 0.4396 - val_accuracy: 0.4839 - val_loss: 1.5248 - val_precision: 0.0000e+00 - val_recall: 0.0000e+00 - learning_rate: 0.0010
+Epoch 3/100
+[1m1/3[0m [32m━━━━━━[0m[37m━━━━━━━━━━━━━━[0m [1m0s[0m 44ms/step - accuracy: 0.7188 - loss: 0.5969 - precision: 0.7692 - recall: 0.6250
+Epoch 3: val_accuracy improved from 0.48387 to 0.51613, saving model to /home/ubuntu/sleep_classification/models/best_model.keras
+[1m3/3[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 140ms/step - accuracy: 0.5934 - loss: 0.7712 - precision: 0.6761 - recall: 0.5275 - val_accuracy: 0.5161 - val_loss: 1.4846 - val_precision: 0.0000e+00 - val_recall: 0.0000e+00 - learning_rate: 0.0010
+Epoch 4/100
+[1m1/3[0m [32m━━━━━━[0m[37m━━━━━━━━━━━━━━[0m [1m0s[0m 49ms/step - accuracy: 0.7500 - loss: 0.6958 - precision: 0.7857 - recall: 0.6875
+Epoch 4: val_accuracy improved from 0.51613 to 0.54839, saving model to /home/ubuntu/sleep_classification/models/best_model.keras
+[1m3/3[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 146ms/step - accuracy: 0.7033 - loss: 0.7089 - precision: 0.7714 - recall: 0.5934 - val_accuracy: 0.5484 - val_loss: 1.4430 - val_precision: 0.0000e+00 - val_recall: 0.0000e+00 - learning_rate: 0.0010
+Epoch 5/100
+[1m1/3[0m [32m━━━━━━[0m[37m━━━━━━━━━━━━━━[0m [1m0s[0m 51ms/step - accuracy: 0.8125 - loss: 0.6164 - precision: 0.8571 - recall: 0.7500[1m3/3[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 29ms/step - accuracy: 0.7840 - loss: 0.6472 - precision: 0.8117 - recall: 0.7026
+Epoch 5: val_accuracy improved from 0.54839 to 0.61290, saving model to /home/ubuntu/sleep_classification/models/best_model.keras
+[1m3/3[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 146ms/step - accuracy: 0.7582 - loss: 0.6371 - precision: 0.7922 - recall: 0.6703 - val_accuracy: 0.6129 - val_loss: 1.4093 - val_precision: 0.0000e+00 - val_recall: 0.0000e+00 - learning_rate: 0.0010
+Epoch 6/100
+[1m1/3[0m [32m━━━━━━[0m[37m━━━━━━━━━━━━━━[0m [1m0s[0m 53ms/step - accuracy: 0.7188 - loss: 0.4128 - precision: 0.7500 - recall: 0.6562[1m3/3[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 30ms/step - accuracy: 0.7121 - loss: 0.4658 - precision: 0.7527 - recall: 0.6395
+Epoch 6: val_accuracy improved from 0.61290 to 0.67742, saving model to /home/ubuntu/sleep_classification/models/best_model.keras
+[1m3/3[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 151ms/step - accuracy: 0.7143 - loss: 0.4946 - precision: 0.7532 - recall: 0.6374 - val_accuracy: 0.6774 - val_loss: 1.3752 - val_precision: 1.0000 - val_recall: 0.0323 - learning_rate: 0.0010
+Epoch 7/100
+[1m1/3[0m [32m━━━━━━[0m[37m━━━━━━━━━━━━━━[0m [1m0s[0m 59ms/step - accuracy: 0.8750 - loss: 0.3394 - precision: 0.9032 - recall: 0.8750[1m3/3[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 29ms/step - accuracy: 0.8116 - loss: 0.4635 - precision: 0.8518 - recall: 0.7865
+Epoch 7: val_accuracy improved from 0.67742 to 0.70968, saving model to /home/ubuntu/sleep_classification/models/best_model.keras
+[1m3/3[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 152ms/step - accuracy: 0.7473 - loss: 0.5189 - precision: 0.7901 - recall: 0.7033 - val_accuracy: 0.7097 - val_loss: 1.3441 - val_precision: 1.0000 - val_recall: 0.0323 - learning_rate: 0.0010
+Epoch 8/100
+[1m1/3[0m [32m━━━━━━[0m[37m━━━━━━━━━━━━━━[0m [1m0s[0m 53ms/step - accuracy: 0.8438 - loss: 0.3970 - precision: 0.8667 - recall: 0.8125[1m3/3[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 28ms/step - accuracy: 0.8033 - loss: 0.3855 - precision: 0.8453 - recall: 0.7663
+Epoch 8: val_accuracy did not improve from 0.70968
+[1m3/3[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 73ms/step - accuracy: 0.7692 - loss: 0.3703 - precision: 0.8272 - recall: 0.7363 - val_accuracy: 0.6774 - val_loss: 1.3178 - val_precision: 1.0000 - val_recall: 0.0323 - learning_rate: 0.0010
+Epoch 9/100
+[1m1/3[0m [32m━━━━━━[0m[37m━━━━━━━━━━━━━━[0m [1m0s[0m 50ms/step - accuracy: 0.8438 - loss: 0.5557 - precision: 0.8889 - recall: 0.7500[1m3/3[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 26ms/step - accuracy: 0.8586 - loss: 0.5022 - precision: 0.8862 - recall: 0.7720
+Epoch 9: val_accuracy improved from 0.70968 to 0.74194, saving model to /home/ubuntu/sleep_classification/models/best_model.keras
+[1m3/3[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 149ms/step - accuracy: 0.8571 - loss: 0.4540 - precision: 0.8750 - recall: 0.7692 - val_accuracy: 0.7419 - val_loss: 1.2942 - val_precision: 1.0000 - val_recall: 0.0323 - learning_rate: 0.0010
+Epoch 10/100
+[1m1/3[0m [32m━━━━━━[0m[37m━━━━━━━━━━━━━━[0m [1m0s[0m 51ms/step - accuracy: 0.8125 - loss: 0.3696 - precision: 0.8387 - recall: 0.8125[1m3/3[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 25ms/step - accuracy: 0.8253 - loss: 0.3385 - precision: 0.8461 - recall: 0.8054
+Epoch 10: val_accuracy did not improve from 0.74194
+[1m3/3[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 67ms/step - accuracy: 0.8352 - loss: 0.3120 - precision: 0.8471 - recall: 0.7912 - val_accuracy: 0.6774 - val_loss: 1.2801 - val_precision: 1.0000 - val_recall: 0.0323 - learning_rate: 0.0010
+Epoch 11/100
+[1m1/3[0m [32m━━━━━━[0m[37m━━━━━━━━━━━━━━[0m [1m0s[0m 58ms/step - accuracy: 0.8438 - loss: 0.4674 - precision: 0.8333 - recall: 0.7812
+Epoch 11: val_accuracy did not improve from 0.74194
+[1m3/3[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 71ms/step - accuracy: 0.8022 - loss: 0.4063 - precision: 0.8235 - recall: 0.7692 - val_accuracy: 0.6129 - val_loss: 1.2749 - val_precision: 1.0000 - val_recall: 0.0323 - learning_rate: 0.0010
+Epoch 12/100
+[1m1/3[0m [32m━━━━━━[0m[37m━━━━━━━━━━━━━━[0m [1m0s[0m 47ms/step - accuracy: 0.8750 - loss: 0.2360 - precision: 0.9286 - recall: 0.8125
+Epoch 12: val_accuracy did not improve from 0.74194
+[1m3/3[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 68ms/step - accuracy: 0.9011 - loss: 0.2657 - precision: 0.9259 - recall: 0.8242 - val_accuracy: 0.5806 - val_loss: 1.2732 - val_precision: 0.0000e+00 - val_recall: 0.0000e+00 - learning_rate: 0.0010
+Epoch 13/100
+[1m1/3[0m [32m━━━━━━[0m[37m━━━━━━━━━━━━━━[0m [1m0s[0m 47ms/step - accuracy: 0.8750 - loss: 0.4041 - precision: 0.9000 - recall: 0.8438
+Epoch 13: val_accuracy did not improve from 0.74194
+[1m3/3[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 62ms/step - accuracy: 0.8571 - loss: 0.3319 - precision: 0.8636 - recall: 0.8352 - val_accuracy: 0.5484 - val_loss: 1.2683 - val_precision: 0.0000e+00 - val_recall: 0.0000e+00 - learning_rate: 0.0010
+Epoch 14/100
+[1m1/3[0m [32m━━━━━━[0m[37m━━━━━━━━━━━━━━[0m [1m0s[0m 46ms/step - accuracy: 0.8750 - loss: 0.2750 - precision: 0.9310 - recall: 0.8438
+Epoch 14: val_accuracy did not improve from 0.74194
+[1m3/3[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 67ms/step - accuracy: 0.8681 - loss: 0.2595 - precision: 0.8966 - recall: 0.8571 - val_accuracy: 0.4839 - val_loss: 1.2617 - val_precision: 0.0000e+00 - val_recall: 0.0000e+00 - learning_rate: 0.0010
+Epoch 15/100
+[1m1/3[0m [32m━━━━━━[0m[37m━━━━━━━━━━━━━━[0m [1m0s[0m 48ms/step - accuracy: 0.8750 - loss: 0.1956 - precision: 0.8750 - recall: 0.8750
+Epoch 15: val_accuracy did not improve from 0.74194
+[1m3/3[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 64ms/step - accuracy: 0.9011 - loss: 0.2413 - precision: 0.9000 - recall: 0.8901 - val_accuracy: 0.4194 - val_loss: 1.2549 - val_precision: 1.0000 - val_recall: 0.0323 - learning_rate: 0.0010
+Epoch 16/100
+[1m1/3[0m [32m━━━━━━[0m[37m━━━━━━━━━━━━━━[0m [1m0s[0m 47ms/step - accuracy: 0.8750 - loss: 0.2436 - precision: 0.8750 - recall: 0.8750[1m3/3[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 32ms/step - accuracy: 0.8889 - loss: 0.2540 - precision: 0.9126 - recall: 0.8727
+Epoch 16: val_accuracy did not improve from 0.74194
+[1m3/3[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 75ms/step - accuracy: 0.9011 - loss: 0.2336 - precision: 0.9294 - recall: 0.8681 - val_accuracy: 0.4194 - val_loss: 1.2780 - val_precision: 1.0000 - val_recall: 0.0323 - learning_rate: 0.0010
+Epoch 17/100
+[1m1/3[0m [32m━━━━━━[0m[37m━━━━━━━━━━━━━━[0m [1m0s[0m 49ms/step - accuracy: 0.9688 - loss: 0.1519 - precision: 0.9688 - recall: 0.9688[1m3/3[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 26ms/step - accuracy: 0.9483 - loss: 0.1832 - precision: 0.9599 - recall: 0.9394
+Epoch 17: val_accuracy did not improve from 0.74194
+[1m3/3[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 65ms/step - accuracy: 0.9231 - loss: 0.1973 - precision: 0.9432 - recall: 0.9121 - val_accuracy: 0.3548 - val_loss: 1.3220 - val_precision: 1.0000 - val_recall: 0.0968 - learning_rate: 0.0010
+Epoch 18/100
+[1m1/3[0m [32m━━━━━━[0m[37m━━━━━━━━━━━━━━[0m [1m0s[0m 56ms/step - accuracy: 0.9688 - loss: 0.0898 - precision: 0.9688 - recall: 0.9688[1m3/3[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 30ms/step - accuracy: 0.9609 - loss: 0.1174 - precision: 0.9599 - recall: 0.9394
+Epoch 18: val_accuracy did not improve from 0.74194
+[1m3/3[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 73ms/step - accuracy: 0.9451 - loss: 0.1341 - precision: 0.9432 - recall: 0.9121 - val_accuracy: 0.3548 - val_loss: 1.3768 - val_precision: 0.4000 - val_recall: 0.0645 - learning_rate: 0.0010
+Epoch 19/100
+[1m1/3[0m [32m━━━━━━[0m[37m━━━━━━━━━━━━━━[0m [1m0s[0m 47ms/step - accuracy: 0.9062 - loss: 0.1603 - precision: 0.9032 - recall: 0.8750
+Epoch 19: val_accuracy did not improve from 0.74194
+[1m3/3[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 63ms/step - accuracy: 0.9121 - loss: 0.1501 - precision: 0.9310 - recall: 0.8901 - val_accuracy: 0.3548 - val_loss: 1.4436 - val_precision: 0.2857 - val_recall: 0.1290 - learning_rate: 0.0010
+Epoch 20/100
+[1m1/3[0m [32m━━━━━━[0m[37m━━━━━━━━━━━━━━[0m [1m0s[0m 47ms/step - accuracy: 0.9375 - loss: 0.1244 - precision: 0.9375 - recall: 0.9375[1m3/3[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 25ms/step - accuracy: 0.9238 - loss: 0.1516 - precision: 0.9238 - recall: 0.9238
+Epoch 20: val_accuracy did not improve from 0.74194
+
+Epoch 20: ReduceLROnPlateau reducing learning rate to 0.0005000000237487257.
+[1m3/3[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 64ms/step - accuracy: 0.9121 - loss: 0.1563 - precision: 0.9121 - recall: 0.9121 - val_accuracy: 0.3548 - val_loss: 1.5188 - val_precision: 0.2632 - val_recall: 0.1613 - learning_rate: 0.0010
+Epoch 21/100
+[1m1/3[0m [32m━━━━━━[0m[37m━━━━━━━━━━━━━━[0m [1m0s[0m 48ms/step - accuracy: 0.9375 - loss: 0.1506 - precision: 0.9375 - recall: 0.9375[1m3/3[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 26ms/step - accuracy: 0.8920 - loss: 0.1701 - precision: 0.9112 - recall: 0.8920
+Epoch 21: val_accuracy did not improve from 0.74194
+[1m3/3[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 66ms/step - accuracy: 0.8791 - loss: 0.1726 - precision: 0.9091 - recall: 0.8791 - val_accuracy: 0.3548 - val_loss: 1.5971 - val_precision: 0.2727 - val_recall: 0.1935 - learning_rate: 5.0000e-04
+Epoch 22/100
+[1m1/3[0m [32m━━━━━━[0m[37m━━━━━━━━━━━━━━[0m [1m0s[0m 48ms/step - accuracy: 0.9375 - loss: 0.1083 - precision: 0.9355 - recall: 0.9062
+Epoch 22: val_accuracy did not improve from 0.74194
+[1m3/3[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 63ms/step - accuracy: 0.9231 - loss: 0.1311 - precision: 0.9535 - recall: 0.9011 - val_accuracy: 0.2903 - val_loss: 1.6757 - val_precision: 0.2609 - val_recall: 0.1935 - learning_rate: 5.0000e-04
+Epoch 23/100
+[1m1/3[0m [32m━━━━━━[0m[37m━━━━━━━━━━━━━━[0m [1m0s[0m 50ms/step - accuracy: 0.9688 - loss: 0.0812 - precision: 0.9688 - recall: 0.9688[1m3/3[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 26ms/step - accuracy: 0.9520 - loss: 0.1169 - precision: 0.9520 - recall: 0.9520
+Epoch 23: val_accuracy did not improve from 0.74194
+[1m3/3[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 63ms/step - accuracy: 0.9341 - loss: 0.1376 - precision: 0.9341 - recall: 0.9341 - val_accuracy: 0.2903 - val_loss: 1.7457 - val_precision: 0.2609 - val_recall: 0.1935 - learning_rate: 5.0000e-04
+Epoch 24/100
+[1m1/3[0m [32m━━━━━━[0m[37m━━━━━━━━━━━━━━[0m [1m0s[0m 50ms/step - accuracy: 0.9375 - loss: 0.1240 - precision: 0.9375 - recall: 0.9375[1m3/3[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 26ms/step - accuracy: 0.9342 - loss: 0.1174 - precision: 0.9342 - recall: 0.9342
+Epoch 24: val_accuracy did not improve from 0.74194
+[1m3/3[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 69ms/step - accuracy: 0.9121 - loss: 0.1224 - precision: 0.9121 - recall: 0.9121 - val_accuracy: 0.2581 - val_loss: 1.8152 - val_precision: 0.2609 - val_recall: 0.1935 - learning_rate: 5.0000e-04
+Epoch 25/100
+[1m1/3[0m [32m━━━━━━[0m[37m━━━━━━━━━━━━━━[0m [1m0s[0m 49ms/step - accuracy: 0.9688 - loss: 0.1231 - precision: 0.9688 - recall: 0.9688[1m3/3[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 26ms/step - accuracy: 0.9645 - loss: 0.1166 - precision: 0.9681 - recall: 0.9645
+Epoch 25: val_accuracy did not improve from 0.74194
+
+Epoch 25: ReduceLROnPlateau reducing learning rate to 0.0002500000118743628.
+[1m3/3[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 64ms/step - accuracy: 0.9560 - loss: 0.1133 - precision: 0.9667 - recall: 0.9560 - val_accuracy: 0.2581 - val_loss: 1.8846 - val_precision: 0.2500 - val_recall: 0.1935 - learning_rate: 5.0000e-04
+Epoch 26/100
+[1m1/3[0m [32m━━━━━━[0m[37m━━━━━━━━━━━━━━[0m [1m0s[0m 51ms/step - accuracy: 1.0000 - loss: 0.0517 - precision: 1.0000 - recall: 1.0000[1m3/3[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 26ms/step - accuracy: 0.9927 - loss: 0.0723 - precision: 0.9926 - recall: 0.9890
+Epoch 26: val_accuracy did not improve from 0.74194
+[1m3/3[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 66ms/step - accuracy: 0.9780 - loss: 0.0947 - precision: 0.9778 - recall: 0.9670 - val_accuracy: 0.2581 - val_loss: 1.9476 - val_precision: 0.2692 - val_recall: 0.2258 - learning_rate: 2.5000e-04
+Epoch 27/100
+[1m1/3[0m [32m━━━━━━[0m[37m━━━━━━━━━━━━━━[0m [1m0s[0m 51ms/step - accuracy: 1.0000 - loss: 0.0863 - precision: 1.0000 - recall: 1.0000
+Epoch 27: val_accuracy did not improve from 0.74194
+[1m3/3[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 70ms/step - accuracy: 0.9560 - loss: 0.1096 - precision: 0.9556 - recall: 0.9451 - val_accuracy: 0.2581 - val_loss: 2.0125 - val_precision: 0.2593 - val_recall: 0.2258 - learning_rate: 2.5000e-04
+Epoch 28/100
+[1m1/3[0m [32m━━━━━━[0m[37m━━━━━━━━━━━━━━[0m [1m0s[0m 49ms/step - accuracy: 0.9375 - loss: 0.1123 - precision: 0.9375 - recall: 0.9375
+Epoch 28: val_accuracy did not improve from 0.74194
+[1m3/3[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 73ms/step - accuracy: 0.9560 - loss: 0.1004 - precision: 0.9560 - recall: 0.9560 - val_accuracy: 0.2581 - val_loss: 2.0795 - val_precision: 0.2500 - val_recall: 0.2258 - learning_rate: 2.5000e-04
+Epoch 29/100
+[1m1/3[0m [32m━━━━━━[0m[37m━━━━━━━━━━━━━━[0m [1m0s[0m 50ms/step - accuracy: 0.9688 - loss: 0.0902 - precision: 0.9677 - recall: 0.9375[1m3/3[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 26ms/step - accuracy: 0.9593 - loss: 0.1097 - precision: 0.9586 - recall: 0.9400
+Epoch 29: val_accuracy did not improve from 0.74194
+[1m3/3[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 67ms/step - accuracy: 0.9560 - loss: 0.1171 - precision: 0.9556 - recall: 0.9451 - val_accuracy: 0.2581 - val_loss: 2.1464 - val_precision: 0.2222 - val_recall: 0.1935 - learning_rate: 2.5000e-04
+Epoch 30/100
+[1m1/3[0m [32m━━━━━━[0m[37m━━━━━━━━━━━━━━[0m [1m0s[0m 53ms/step - accuracy: 0.9688 - loss: 0.0593 - precision: 0.9688 - recall: 0.9688[1m3/3[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 28ms/step - accuracy: 0.9770 - loss: 0.0862 - precision: 0.9770 - recall: 0.9770
+Epoch 30: val_accuracy did not improve from 0.74194
+
+Epoch 30: ReduceLROnPlateau reducing learning rate to 0.0001250000059371814.
+[1m3/3[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 69ms/step - accuracy: 0.9780 - loss: 0.0913 - precision: 0.9780 - recall: 0.9780 - val_accuracy: 0.2581 - val_loss: 2.2199 - val_precision: 0.2143 - val_recall: 0.1935 - learning_rate: 2.5000e-04
+Epoch 30: early stopping
+Restoring model weights from the end of the best epoch: 15.
+
+   Final model saved to: /home/ubuntu/sleep_classification/models/final_model.keras
+
+9. Evaluating on test set...
+   Test Loss: 1.3394
+   Test Accuracy: 0.4194
+   Test Precision: 0.0000
+   Test Recall: 0.0000
+Traceback (most recent call last):
+  File "/home/ubuntu/sleep_classification/train.py", line 246, in <module>
+    test_f1 = 2 * (test_precision * test_recall) / (test_precision + test_recall)
+              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ZeroDivisionError: float division by zero

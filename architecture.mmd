@@ -1,0 +1,64 @@
+graph TB
+    subgraph Input["Input Layer (30-second epochs)"]
+        EEG["EEG Signals<br/>2 channels<br/>(Fpz-Cz, Pz-Oz)<br/>3000 samples"]
+        EOG["EOG Signal<br/>1 channel<br/>(Horizontal)<br/>3000 samples"]
+        EMG["EMG Signal<br/>1 channel<br/>(Submental)<br/>3000 samples"]
+    end
+    
+    subgraph EEG_Stream["EEG Stream"]
+        EEG_Conv1["Conv1D (64, k=50, s=6)"]
+        EEG_BN1["BatchNorm + MaxPool"]
+        EEG_Conv2["Conv1D (128, k=8)"]
+        EEG_BN2["BatchNorm + MaxPool"]
+        EEG_Conv3["Conv1D (256, k=4)"]
+        EEG_GAP["GlobalAvgPool<br/>→ 256 features"]
+    end
+    
+    subgraph EOG_Stream["EOG Stream"]
+        EOG_Conv1["Conv1D (32, k=50, s=6)"]
+        EOG_BN1["BatchNorm + MaxPool"]
+        EOG_Conv2["Conv1D (64, k=8)"]
+        EOG_BN2["BatchNorm + MaxPool"]
+        EOG_Conv3["Conv1D (256, k=4)"]
+        EOG_GAP["GlobalAvgPool<br/>→ 256 features"]
+    end
+    
+    subgraph EMG_Stream["EMG Stream"]
+        EMG_Conv1["Conv1D (32, k=50, s=6)"]
+        EMG_BN1["BatchNorm + MaxPool"]
+        EMG_Conv2["Conv1D (64, k=8)"]
+        EMG_BN2["BatchNorm + MaxPool"]
+        EMG_Conv3["Conv1D (256, k=4)"]
+        EMG_GAP["GlobalAvgPool<br/>→ 256 features"]
+    end
+    
+    subgraph Fusion["Attention-based Fusion"]
+        Stack["Stack Features<br/>(3 × 256)"]
+        Attention["Attention Mechanism<br/>Softmax Normalization"]
+        Weighted["Weighted Sum<br/>→ 256 features"]
+    end
+    
+    subgraph Classification["Classification Head"]
+        Dense1["Dense (256, ReLU)<br/>+ BatchNorm + Dropout"]
+        Dense2["Dense (128, ReLU)"]
+        Output["Dense (5, Softmax)<br/>Wake | N1 | N2 | N3 | REM"]
+    end
+    
+    EEG --> EEG_Conv1 --> EEG_BN1 --> EEG_Conv2 --> EEG_BN2 --> EEG_Conv3 --> EEG_GAP
+    EOG --> EOG_Conv1 --> EOG_BN1 --> EOG_Conv2 --> EOG_BN2 --> EOG_Conv3 --> EOG_GAP
+    EMG --> EMG_Conv1 --> EMG_BN1 --> EMG_Conv2 --> EMG_BN2 --> EMG_Conv3 --> EMG_GAP
+    
+    EEG_GAP --> Stack
+    EOG_GAP --> Stack
+    EMG_GAP --> Stack
+    
+    Stack --> Attention --> Weighted
+    Weighted --> Dense1 --> Dense2 --> Output
+    
+    style Input fill:#e1f5ff
+    style EEG_Stream fill:#fff4e6
+    style EOG_Stream fill:#fff4e6
+    style EMG_Stream fill:#fff4e6
+    style Fusion fill:#f3e5f5
+    style Classification fill:#e8f5e9
+

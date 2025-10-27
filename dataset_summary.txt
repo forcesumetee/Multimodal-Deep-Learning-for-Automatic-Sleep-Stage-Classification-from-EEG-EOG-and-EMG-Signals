@@ -1,0 +1,33 @@
+Sleep-EDF Dataset Summary
+================================================================================
+
+PSG File: SC4001E0-PSG.edf
+Hypnogram File: SC4001EC-Hypnogram.edf
+
+Duration: 22.08 hours
+Sampling Frequency: 100.0 Hz
+Number of Channels: 7
+
+Channels:
+  - EEG Fpz-Cz
+  - EEG Pz-Oz
+  - EOG horizontal
+  - Resp oro-nasal
+  - EMG submental
+  - Temp rectal
+  - Event marker
+
+Sleep Stage Distribution:
+  N1          :   24 epochs ( 15.6%)
+  N2          :   40 epochs ( 26.0%)
+  N3          :   48 epochs ( 31.2%)
+  N4          :   23 epochs ( 14.9%)
+  Unknown     :    1 epochs (  0.6%)
+  REM         :    6 epochs (  3.9%)
+  Wake        :   12 epochs (  7.8%)
+
+Total Epochs: 154
+
+EEG Channels: EEG Fpz-Cz, EEG Pz-Oz
+EOG Channels: EOG horizontal
+EMG Channels: EMG submental

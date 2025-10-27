@@ -1,0 +1,38 @@
+
+Multimodal Sleep Stage Classification - Training Summary
+================================================================================
+
+Dataset: Sleep-EDF Database Expanded
+Model Architecture: Multi-stream CNN with Attention-based Fusion
+Modalities: EEG (2 channels), EOG (1 channel), EMG (1 channel)
+
+Training Configuration:
+- Total epochs: 30
+- Best epoch: 9
+- Early stopping: Yes (patience=15)
+- Learning rate reduction: Yes (factor=0.5, patience=5)
+
+Best Validation Performance (Epoch 9):
+- Accuracy: 0.7419 (74.19%)
+- Loss: 1.2942
+- Precision: 1.0000
+- Recall: 0.0323
+
+Final Training Performance:
+- Accuracy: 0.9780 (97.80%)
+- Loss: 0.0913
+- Precision: 0.9780
+- Recall: 0.9780
+
+Model Characteristics:
+- Total parameters: 476,171
+- Trainable parameters: 473,355
+- Non-trainable parameters: 2,816
+
+Architecture Highlights:
+- Separate CNN streams for each modality (EEG, EOG, EMG)
+- Attention mechanism for adaptive modality fusion
+- Batch normalization and dropout for regularization
+- Global average pooling for feature aggregation
+
+================================================================================
